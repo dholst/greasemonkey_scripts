@@ -1,8 +1,8 @@
 // @name           show google groups topic view
 // @namespace      darrinholst.com
-// @description    changes links on groups.google.com to go to the topic view
-// @include        http://groups.google.com/
-// @include        https://groups.google.com/
+// @description    changes links to groups on groups.google.com to go directly to the topic view
+// @include        http://groups.google.com*
+// @include        https://groups.google.com*
 // ==/UserScript==
 
 var snapshot = document.evaluate('.//a[contains(@href, "/group/")]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
