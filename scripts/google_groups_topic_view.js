@@ -1,3 +1,4 @@
+// ==UserScript==
 // @name           show google groups topic view
 // @namespace      darrinholst.com
 // @description    changes links to groups on groups.google.com to go directly to the topic view
