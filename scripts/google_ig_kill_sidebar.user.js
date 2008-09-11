@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           kill iGoogle sidebar
+// @name           google_ig_kill_sidebar
 // @namespace      darrinholst.com
 // @description    read the name
 // @include        http://www.google.com/ig/*

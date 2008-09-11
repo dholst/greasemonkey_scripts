@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           picasa_to_flicr
+// @name           google_ig_picasa_to_flickr
 // @namespace      darrinholst.com
 // @description    changes picasa link to flickr in iGoogle
 // @include        http://www.google.com/ig/*

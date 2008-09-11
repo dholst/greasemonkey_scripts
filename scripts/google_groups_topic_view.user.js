@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           show google groups topic view
+// @name           google_groups_topic_view
 // @namespace      darrinholst.com
 // @description    changes links to groups on groups.google.com to go directly to the topic view
 // @include        http://groups.google.com*
