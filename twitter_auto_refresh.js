@@ -22,21 +22,51 @@
           var table = document.createElement('table');
           table.innerHTML = timeline[1];
           var statuses = $('tr', table);
+          var newCount = 0;
           
           for(var i = statuses.length - 1; i >= 0; i--) {
             if($('#' + statuses[i].id).length == 0) {
               $('#timeline').prepend(statuses[i]);
+              newCount++;
             }
           }
           
           table = null;
+          
+          if(newCount > 0) {
+            var title = document.title;
+            var m = title.match(/(.*) \((\d)+\)/)
+            
+            if(m) {
+              newCount += parseInt(m[2]);
+              title = m[1];
+            }
+            
+            document.title = title + ' (' + newCount + ')';
+          }
         }
       });     
-    }	
+    }
     
-  	return function() { 
+    var keyHandler = function(event) {
+      if(event.keyCode == 75) {
+        if (event.target && event.target.nodeName) {
+          var targetNodeName = event.target.nodeName.toLowerCase();
+    
+          if (targetNodeName == "textarea" || (targetNodeName == "input" && event.target.type && event.target.type.toLowerCase() == "text")) {
+            return true;
+          }
+        }
+        
+        document.title = "Twitter";
+        $('tr.hentry').addClass("already-read").addClass("aready-read").removeClass('last-read');
+      }
+    }
+    
+    return function() { 
       setInterval(update, REFRESH_RATE);
-	  }
+      window.addEventListener('keydown', keyHandler, false);
+    }
   })();
   
   var waitForjQueryToBeLoaded = function() {  
