@@ -35,7 +35,7 @@
           
           if(newCount > 0) {
             var title = document.title;
-            var m = title.match(/(.*) \((\d)+\)/)
+            var m = title.match(/(.*) \((\d+)\)/)
             
             if(m) {
               newCount += parseInt(m[2]);
@@ -50,7 +50,7 @@
     
     var keyHandler = function(event) {
       if(event.keyCode == 75) {
-        if (event.target && event.target.nodeName) {
+    	  if (event.target && event.target.nodeName) {
           var targetNodeName = event.target.nodeName.toLowerCase();
     
           if (targetNodeName == "textarea" || (targetNodeName == "input" && event.target.type && event.target.type.toLowerCase() == "text")) {
@@ -63,10 +63,10 @@
       }
     }
     
-    return function() { 
+  	return function() { 
       setInterval(update, REFRESH_RATE);
       window.addEventListener('keydown', keyHandler, false);
-    }
+	  }
   })();
   
   var waitForjQueryToBeLoaded = function() {  
