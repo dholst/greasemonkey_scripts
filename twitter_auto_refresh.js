@@ -25,7 +25,7 @@
           
           for(var i = statuses.length - 1; i >= 0; i--) {
             if(unsafeWindow.jQuery('#' + statuses[i].id).length == 0) {
-              unsafeWindow.jQuery('#timeline').prepend(statuses[i]);
+              unsafeWindow.jQuery('#timeline_body').prepend(statuses[i]);
               newCount++;
             }
           }
