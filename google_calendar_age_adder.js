@@ -9,33 +9,32 @@
 // ==/UserScript==
 
 (function() {
-  var EVENT_CONTAINER = 'mainbody',
-      DATE_CONTAINER = 'dateunderlay',
-      EVENT_TAG = 'nobr';
+	var EVENT_CONTAINER = 'mainbody',
+			  DATE_CONTAINER = 'dateunderlay',
+			  EVENT_TAG = 'a';
 
-  document.getElementById(EVENT_CONTAINER).addEventListener('DOMSubtreeModified', function() {
-    var events = document.getElementById(EVENT_CONTAINER).getElementsByTagName(EVENT_TAG);
-    var year = /^.*(\d{4})$/.exec(document.getElementById(DATE_CONTAINER).innerHTML)[1];
+	document.getElementById(EVENT_CONTAINER).addEventListener('DOMSubtreeModified', function() {
+		var events = document.getElementById(EVENT_CONTAINER).getElementsByTagName(EVENT_TAG);
+		var year = /^.*(\d{4})$/.exec(document.getElementById(DATE_CONTAINER).innerHTML)[1];
+		for (var i = 0; i < events.length; i++) {
+			var e = events[i].innerHTML;
 
-    for (var i = 0; i < events.length; i++) {
-      var e = events[i].innerHTML;
+			// match old settings like xxxxx - YYYY
+			var oldMatch = /^.* - ((?:19|20)\d\d)$$/.exec(e);
 
-      // match old settings like xxxxx - YYYY
-      var oldMatch = /^.* - ((?:19|20)\d\d)$$/.exec(e);
+			// match new settings like xxxxx [bd:YYYY]
+			var newMatch = /(^.* )(\[bd:(?:19|20)\d\d\])$$/.exec(e);
 
-      // match new settings like xxxxx [bd:YYYY]
-      var newMatch = /(^.* )(\[bd:(?:19|20)\d\d\])$$/.exec(e);
+			if (oldMatch) {
+				// shows: xxxxx - YYYY (age)
+				events[i].innerHTML = e + ' (' + (year - oldMatch[1]) + ')';
+			}
 
-      if (oldMatch) {
-        // shows: xxxxx - YYYY (age)
-        events[i].innerHTML = e + ' (' + (year - oldMatch[1]) + ')';
-      }
-
-      if (newMatch) {
-        // shows: xxxxx (age)
-        var birthyear = newMatch[2].substring(4, 8);
-        events[i].innerHTML = newMatch[1] + ' (' + (year - birthyear) + ')';
-      }
-    }
-  }, true);
+			if (newMatch) {
+				// shows: xxxxx (age)
+				var birthyear = newMatch[2].substring(4, 8);
+				events[i].innerHTML = newMatch[1] + ' (' + (year - birthyear) + ')';
+			}
+		}
+	}, true);
 })();
