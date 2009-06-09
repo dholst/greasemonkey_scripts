@@ -9,32 +9,41 @@
 // ==/UserScript==
 
 (function() {
-	var EVENT_CONTAINER = 'mainbody',
-			  DATE_CONTAINER = 'dateunderlay',
-			  EVENT_TAG = 'a';
+  var DATE_CONTAINER = 'dateunderlay',
+      EVENT_CONTAINER = 'mainbody',
+      EVENT_TAG = 'div';
 
-	document.getElementById(EVENT_CONTAINER).addEventListener('DOMSubtreeModified', function() {
-		var events = document.getElementById(EVENT_CONTAINER).getElementsByTagName(EVENT_TAG);
-		var year = /^.*(\d{4})$/.exec(document.getElementById(DATE_CONTAINER).innerHTML)[1];
-		for (var i = 0; i < events.length; i++) {
-			var e = events[i].innerHTML;
+  var addEm = function() {
+    var year = /^.*(\d{4})$/.exec(document.getElementById(DATE_CONTAINER).innerHTML)[1];
+    var events = document.getElementById(EVENT_CONTAINER).getElementsByTagName(EVENT_TAG);
+    
+    for (var i = 0, j = events.length; i < j; i++) {
+      var childNodes = events[i].childNodes
+      
+      for(var m = 0, n = childNodes.length; m < n; m++){
+        var childNode = childNodes[m];
+        
+        if(childNode.nodeType == 3) {
+          var nodeValue = childNode.nodeValue;
+          
+          var oldMatch = /^.* - ((?:19|20)\d\d)$$/.exec(nodeValue);
+          var newMatch = /(^.* )(\[bd:(?:19|20)\d\d\])$$/.exec(nodeValue);
+          
+          if (oldMatch) {
+            // shows: xxxxx - YYYY (age)
+            childNode.nodeValue = nodeValue + ' (' + (year - oldMatch[1]) + ')';
+          }
 
-			// match old settings like xxxxx - YYYY
-			var oldMatch = /^.* - ((?:19|20)\d\d)$$/.exec(e);
-
-			// match new settings like xxxxx [bd:YYYY]
-			var newMatch = /(^.* )(\[bd:(?:19|20)\d\d\])$$/.exec(e);
-
-			if (oldMatch) {
-				// shows: xxxxx - YYYY (age)
-				events[i].innerHTML = e + ' (' + (year - oldMatch[1]) + ')';
-			}
-
-			if (newMatch) {
-				// shows: xxxxx (age)
-				var birthyear = newMatch[2].substring(4, 8);
-				events[i].innerHTML = newMatch[1] + ' (' + (year - birthyear) + ')';
-			}
-		}
-	}, true);
+          if (newMatch) {
+            // shows: xxxxx (age)
+            var birthyear = newMatch[2].substring(4, 8);
+            childNode.nodeValue = newMatch[1] + ' (' + (year - birthyear) + ')';
+          }
+        }
+      }
+    }
+  }
+  
+  document.getElementById(EVENT_CONTAINER).addEventListener('DOMSubtreeModified', addEm, true);
+  addEm();
 })();
